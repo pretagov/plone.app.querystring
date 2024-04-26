@@ -163,6 +163,14 @@
     </records>
 
     <records interface="plone.app.querystring.interfaces.IQueryOperation"
+             prefix="plone.app.querystring.operation.string.search">
+        <value key="title" i18n:translate="">Search</value>
+        <value key="description"></value>
+        <value key="operation">plone.app.querystring.queryparser._search</value>
+        <value key="widget">StringWidget</value>
+    </records>
+
+    <records interface="plone.app.querystring.interfaces.IQueryOperation"
              prefix="plone.app.querystring.operation.string.currentUser">
         <value key="title" i18n:translate="">Current logged in user</value>
         <value key="description" i18n:translate="">The user viewing the querystring results</value>
