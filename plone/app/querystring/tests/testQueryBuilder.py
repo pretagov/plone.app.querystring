@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
 from plone.app.querystring.testing import (
     TEST_PROFILE_PLONEAPPQUERYSTRING_INTEGRATION_TESTING,
 )
-
 from zope.component import getMultiAdapter
 from zope.publisher.browser import TestRequest
 
@@ -11,7 +8,6 @@ import unittest
 
 
 class TestQuerybuilder(unittest.TestCase):
-
     layer = TEST_PROFILE_PLONEAPPQUERYSTRING_INTEGRATION_TESTING
 
     def setUp(self):
@@ -57,7 +53,7 @@ class TestQuerybuilder(unittest.TestCase):
     def testQueryBuilderNumberOfResultsView(self):
         res = self.folder.restrictedTraverse("@@querybuildernumberofresults")
         length_of_results = res.browserDefault(None)[0](self.query)
-        # apparently brower travelsal is different from the traversal we get
+        # apparently browser traversal is different from the traversal we get
         # from restrictedTraverse. This did hurt a bit.
         numeric = int(length_of_results.split(" ")[0])
         self.assertEqual(numeric, 1)
@@ -65,9 +61,7 @@ class TestQuerybuilder(unittest.TestCase):
     def testMakeQuery(self):
         results = self.querybuilder._makequery(query=self.query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
 
     def testQueryStringIs(self):
         query = [
@@ -99,7 +93,6 @@ class TestQuerybuilder(unittest.TestCase):
 
         # Test normal, without custom_query.
         results = self.querybuilder._makequery(query=query)
-        print([it.Title() for it in results])
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Title(), "Test Folder")
 
@@ -115,9 +108,7 @@ class TestQuerybuilder(unittest.TestCase):
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
 
     def testMakeQueryWithSubjectNot(self):
         self.folder.setSubject(["Ipsum"])
@@ -147,9 +138,7 @@ class TestQuerybuilder(unittest.TestCase):
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
 
     def testMakeQueryWithMultipleSubjectNot(self):
         self.folder.setSubject(["Ipsum"])
@@ -179,9 +168,7 @@ class TestQuerybuilder(unittest.TestCase):
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
         self.assertEqual(results[0].getObject().Subject(), ("Äüö",))
 
     def testMakeQueryWithUnicodeSubjectWithSpecialCharacters(self):
@@ -191,14 +178,12 @@ class TestQuerybuilder(unittest.TestCase):
             {
                 "i": "Subject",
                 "o": "plone.app.querystring.operation.selection.any",
-                "v": u"Äüö",
+                "v": "Äüö",
             }
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
         self.assertEqual(results[0].getObject().Subject(), ("Äüö",))
 
     def testMakeQueryWithUnicodeSubjectWithMultipleSubjects(self):
@@ -208,14 +193,12 @@ class TestQuerybuilder(unittest.TestCase):
             {
                 "i": "Subject",
                 "o": "plone.app.querystring.operation.selection.any",
-                "v": [u"Äüö", u"Üöß"],
+                "v": ["Äüö", "Üöß"],
             }
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
         self.assertEqual(results[0].getObject().Subject(), ("Äüö",))
 
     def testMakeQueryWithSearchableText(self):
@@ -223,7 +206,7 @@ class TestQuerybuilder(unittest.TestCase):
             {
                 "i": "SearchableText",
                 "o": "plone.app.querystring.operation.string.contains",
-                "v": u"Test",
+                "v": "Test",
             }
         ]
         results = self.querybuilder._makequery(query=query)
@@ -237,14 +220,12 @@ class TestQuerybuilder(unittest.TestCase):
             {
                 "i": "SearchableText",
                 "o": "plone.app.querystring.operation.string.contains",
-                "v": u"This and that",
+                "v": "This and that",
             }
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
 
     def testMakeQueryWithSearchableTextSpecialWordsOr(self):
         self.testpage.description = "This or that is the description"
@@ -253,14 +234,12 @@ class TestQuerybuilder(unittest.TestCase):
             {
                 "i": "SearchableText",
                 "o": "plone.app.querystring.operation.string.contains",
-                "v": u"This or that",
+                "v": "This or that",
             }
         ]
         results = self.querybuilder._makequery(query=query)
         self.assertEqual(len(results), 1)
-        self.assertEqual(
-            results[0].getURL(), "http://nohost/plone/collectionstestpage"
-        )
+        self.assertEqual(results[0].getURL(), "http://nohost/plone/collectionstestpage")
 
     def testQueryBuilderCustomQuery(self):
         """Test, if custom queries are respected when getting the results."""
@@ -346,9 +325,82 @@ class TestQuerybuilder(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Title(), "Collectionstestpage 2")
 
+    def test_munge_search_term(self):
+        from plone.app.querystring.querybuilder import _BAD_CHARS
+        from plone.app.querystring.querybuilder import munge_search_term
+
+        search_term_tests = [
+            (
+                # search term
+                "spam ham",
+                "spam AND ham*",
+            ),
+            (
+                # quoted term
+                '"spam ham"',
+                '"spam ham"',
+            ),
+            (
+                # cleanup quoted terms
+                '" spam ham   "',
+                '"spam ham"',
+            ),
+            (
+                # quoted term with inner parenthesis
+                '"spam (ham)"',
+                '"spam (ham)"',
+            ),
+            (
+                # quoted term with inner parenthesis
+                '"spam" (ham)',
+                '"spam" AND "("ham")"*',
+            ),
+            (
+                # quoted term with inner parenthesis
+                '"(spam ham)"',
+                '"(spam ham)"',
+            ),
+            (
+                # mixed cases
+                "Spam hAm",
+                "Spam AND hAm*",
+            ),
+            (
+                # mix quoting and unquoted
+                'let\'s eat some "ham and eggs " without spam ',
+                '"ham and eggs" AND let\'s AND eat AND some ' "AND without AND spam*",
+            ),
+            (
+                'test "Welcome" to "Plone" retest',
+                '"Welcome" AND "Plone" AND test AND to AND retest*',
+            ),
+            (
+                # parentheses
+                "spam (ham)",
+                'spam AND "("ham")"*',
+            ),
+            (
+                # special keywords
+                "spam or not ham and eggs",
+                'spam AND "or" AND "not" AND ham AND "and" AND eggs*',
+            ),
+            (
+                # bad characters
+                " ".join(_BAD_CHARS),
+                "",
+            ),
+            (
+                # weird input
+                'test ""Welcome" to "Plone"" retest',
+                '"to" AND test AND WelcomePlone AND retest*',
+            ),
+        ]
+
+        for _in, _out in search_term_tests:
+            self.assertEqual(munge_search_term(_in), _out)
+
 
 class TestQuerybuilderResultTypes(unittest.TestCase):
-
     layer = TEST_PROFILE_PLONEAPPQUERYSTRING_INTEGRATION_TESTING
 
     def setUp(self):
@@ -404,7 +456,6 @@ class TestQuerybuilderResultTypes(unittest.TestCase):
 
 
 class TestConfigurationFetcher(unittest.TestCase):
-
     layer = TEST_PROFILE_PLONEAPPQUERYSTRING_INTEGRATION_TESTING
 
     def setUp(self):

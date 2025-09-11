@@ -8,6 +8,128 @@ Changelog
 
 .. towncrier release notes start
 
+2.1.3 (2025-01-23)
+------------------
+
+Bug fixes:
+
+
+- Fix a not needed view call
+
+
+2.1.2 (2024-06-13)
+------------------
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (6e36bcc4)
+
+
+Tests
+
+
+- Remove unused ``portal_properties`` code from tests.
+  [maurits] (#125)
+
+
+2.1.1 (2023-12-14)
+------------------
+
+Bug fixes:
+
+
+- Handle parenthesis inside quotes
+  [erral] (#139)
+
+
+2.1.0 (2023-09-21)
+------------------
+
+New features:
+
+
+- Add a way to specific a context for getting vocabularies in the QuerystringRegistryReader. @davisagli (#137)
+
+
+2.0.6 (2023-08-17)
+------------------
+
+Bug fixes:
+
+
+- Fix the currentUser operation when the current user's username is different from their user id. @davisagli (#135)
+
+
+2.0.5 (2023-06-16)
+------------------
+
+Bug fixes:
+
+
+- Fix integer operations to accept integers. @davisagli
+  Fix integer operations to avoid adding None to the query when the input is not valid. @davisagli (#131)
+- Merge range queries on the same index instead of overwriting. @davisagli (#132)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (dd37b9f9)
+
+
+2.0.4 (2023-05-22)
+------------------
+
+Bug fixes:
+
+
+- Fix a circular transitive dependency to `plone.app.querystring`.
+  New direct dependency explicit on `plone.app.vocabularies`.
+  Move `plone.app.querystring.catalog.CatalogVocabularyFactory` to `.vocabularies`, move the ZCML to register the factory, move the the test.
+  Move `plone.app.querystring.utils.parse_query` with new name `parseAndModifyFormquery` to `.queryparser`.
+  [@jensens] (fix-circular-dep-pavocabularies)
+
+
+2.0.3 (2023-04-26)
+------------------
+
+Bug fixes:
+
+
+- Fix cyclic dependency, do not depend on `plone.app.layout`.
+  [@jensens] (rm-cyclic-dep)
+
+
+2.0.2 (2023-03-21)
+------------------
+
+Bug fixes:
+
+
+- Housecleaning: pyupgrade, isort, black, remove six, move imports from CMFPlone to plone.base, copy munge_search_terms from CMFPlone to here to avoid dependency on CMFPlone.
+  [jensens] (#119)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (a533099d)
+
+
+2.0.1 (2022-12-21)
+------------------
+
+Bug fixes:
+
+
+- Minor cleanup on tests.
+  [gforcada] (#1)
+
+
 2.0.0 (2022-07-21)
 ------------------
 
@@ -205,7 +327,7 @@ New features:
 - Refactor addition of criteria to stick inside ``INavigationRoot`` in querybuilder.
   Added a simple ``IQueryModifier`` interfaces expecting a query and returning a query.
   Iterates over all sorted utilities providing such an interfaces and calls it right before the query is parsed.
-  Code to add the ``INavigationRoot`` stickyness was moved to such a query modifier.
+  Code to add the ``INavigationRoot`` stickiness was moved to such a query modifier.
   [jensens]
 
 Bug fixes:
@@ -537,7 +659,7 @@ Fixes:
   results not wrapped as an IContentListing.
   [davisagli]
 
-* Declare all dependencies in setup.py to resolve a dependeny problem in
+* Declare all dependencies in setup.py to resolve a dependency problem in
   test setups, where the Plone stack isn't fully loaded.
   [thet]
 
