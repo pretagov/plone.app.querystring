@@ -337,6 +337,16 @@ class TestQuerybuilder(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Title(), "Collectionstestpage 2")
 
+    def test_filter_query_munges_searchable_text(self):
+        query = self.querybuilder.filter_query({"SearchableText": "spam ham"})
+        self.assertEqual(query["SearchableText"], "spam AND ham*")
+
+    def test_filter_query_search_operator_is_not_munged(self):
+        query = self.querybuilder.filter_query(
+            {"SearchableText": {"query": "spam ham", "operator": "search"}}
+        )
+        self.assertEqual(query["SearchableText"], {"query": "spam ham"})
+
     def test_munge_search_term(self):
         from plone.app.querystring.querybuilder import _BAD_CHARS
         from plone.app.querystring.querybuilder import munge_search_term

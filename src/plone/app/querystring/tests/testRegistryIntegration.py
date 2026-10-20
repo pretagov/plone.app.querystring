@@ -36,6 +36,42 @@ class TestOperationDefinitions(unittest.TestCase):
             "plone.app.querystring.queryparser._dateLessThan",
         )
 
+    def test_string_search(self):
+        registry = self.portal.portal_registry
+        prefix = "plone.app.querystring.operation.string.search"
+
+        self.assertEqual(registry[prefix + ".title"], "Search")
+        self.assertEqual(
+            registry[prefix + ".operation"],
+            "plone.app.querystring.queryparser._search",
+        )
+        self.assertIn(
+            prefix,
+            registry["plone.app.querystring.field.SearchableText.operations"],
+        )
+
+    def test_upgrade_15_to_16(self):
+        registry = self.portal.portal_registry
+        setup = self.portal.portal_setup
+        profile = "plone.app.querystring:default"
+        operations = "plone.app.querystring.field.SearchableText.operations"
+        search = "plone.app.querystring.operation.string.search"
+        less_than = "plone.app.querystring.operation.date.lessThan.operation"
+
+        # A site at 15 from upstream (date operators) or from the fork
+        # (search operator) gets both from the 15 -> 16 step.
+        registry[operations] = [op for op in registry[operations] if op != search]
+        registry[less_than] = "plone.app.querystring.queryparser._lessThan"
+        setup.setLastVersionForProfile(profile, "15")
+
+        setup.upgradeProfile(profile)
+
+        self.assertEqual(setup.getLastVersionForProfile(profile), ("16",))
+        self.assertIn(search, registry[operations])
+        self.assertEqual(
+            registry[less_than], "plone.app.querystring.queryparser._dateLessThan"
+        )
+
 
 class TestFieldDefinitions(unittest.TestCase):
     layer = PLONEAPPQUERYSTRING_INTEGRATION_TESTING
