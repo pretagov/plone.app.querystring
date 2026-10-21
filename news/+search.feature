@@ -1,0 +1,1 @@
+pretagov fork: add a 'Search' operator for SearchableText that passes the search term to the catalog without munging it. Profile upgrade 15 to 16 adds it and reapplies upstream's 14 to 15 date operator change for sites that already ran the fork's earlier 14 to 15 step.

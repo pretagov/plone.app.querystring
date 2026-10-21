@@ -322,6 +322,12 @@ class TestQueryParser(TestQueryParserBase):
 
 
 class TestQueryGenerators(TestQueryParserBase):
+    def test__search(self):
+        data = Row(index="SearchableText", operator="_search", values="spam ham")
+        parsed = queryparser._search(MockSite(), data)
+        expected = {"SearchableText": {"query": "spam ham", "operator": "search"}}
+        self.assertEqual(parsed, expected)
+
     def test__between(self):
         data = Row(
             index="modified", operator="_between", values=["2009/08/12", "2009/08/14"]
